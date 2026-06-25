@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>钢琴演奏 · MusicXML 播放器</title>
+  <link rel="stylesheet" href="style.css" />
+  <!-- 第三方库走 CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/tone@14.8.49/build/Tone.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/opensheetmusicdisplay@1.8.7/build/opensheetmusicdisplay.min.js"></script>
+</head>
+<body>
+  <header>
+    <h1>🎹 钢琴演奏 · 乐谱播放器</h1>
+    <p class="subtitle">自动演奏经典曲目 + 实时按键高亮,也可用鼠标点击键盘自由弹奏(Audiveris 图片识别后续接入)</p>
+  </header>
+
+  <section class="controls">
+    <label class="file-label">
+      上传 MusicXML
+      <input type="file" id="fileInput" accept=".xml,.musicxml,.mxl" />
+    </label>
+    <select id="sampleSelect">
+      <option value="samples/twinkle.musicxml">小星星 Twinkle</option>
+      <option value="samples/ode-to-joy.musicxml">欢乐颂 Ode to Joy</option>
+      <option value="samples/fur-elise.musicxml">致爱丽丝 Für Elise</option>
+      <option value="samples/happy-birthday.musicxml">生日快乐 Happy Birthday</option>
+      <option value="samples/jingle-bells.musicxml">铃儿响叮当 Jingle Bells</option>
+    </select>
+    <button id="loadSampleBtn">加载样例</button>
+
+    <span class="divider"></span>
+
+    <button id="playBtn" disabled>▶ 演奏</button>
+    <button id="pauseBtn" disabled>⏸ 暂停</button>
+    <button id="stopBtn" disabled>⏹ 停止</button>
+
+    <label class="tempo">
+      速度 <span id="tempoVal">100</span>%
+      <input type="range" id="tempoSlider" min="40" max="160" value="100" />
+    </label>
+  </section>
+
+  <section class="progress-wrap">
+    <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+    <span class="time" id="timeLabel">0:00 / 0:00</span>
+  </section>
+
+  <section class="status" id="status">请加载一个乐谱开始。</section>
+
+  <!-- 钢琴键盘 -->
+  <section class="piano-wrap">
+    <div id="piano"></div>
+  </section>
+
+  <!-- 乐谱渲染区 -->
+  <section class="score-wrap">
+    <div id="osmdContainer"></div>
+  </section>
+
+  <script src="musicxml-parser.js"></script>
+  <script src="piano.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

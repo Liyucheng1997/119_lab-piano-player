@@ -1,0 +1,17 @@
+# 依赖(本项目零依赖,保留以防未来引入)
+node_modules/
+
+# Audiveris 识别产生的临时文件(后端接入后使用)
+server/uploads/
+*.mxl.tmp
+
+# 操作系统
+.DS_Store
+Thumbs.db
+
+# 编辑器
+.vscode/
+.idea/
+
+# 日志
+*.log
