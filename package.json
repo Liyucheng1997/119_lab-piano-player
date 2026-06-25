@@ -1,6 +1,6 @@
 {
   "name": "piano-omr-player",
-  "version": "0.1.0",
+  "version": "1.1.0",
   "description": "钢琴演奏网站:上传乐谱图片(Audiveris OMR)→ 自动演奏 + 按键高亮。第一版为前端播放器。",
   "scripts": {
     "start": "node server.js"

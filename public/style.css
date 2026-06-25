@@ -39,6 +39,7 @@ header h1 { margin: 0 0 4px; font-size: 22px; }
 
 .controls button,
 .controls select,
+.controls input[type="search"],
 .file-label {
   background: var(--panel-2);
   color: var(--text);
@@ -53,6 +54,33 @@ header h1 { margin: 0 0 4px; font-size: 22px; }
 .file-label:hover { background: #383d4b; }
 .controls button:disabled { opacity: 0.4; cursor: not-allowed; }
 
+.controls input[type="search"] {
+  cursor: text;
+}
+
+.controls input[type="search"]::placeholder {
+  color: var(--muted);
+}
+
+#sampleSelect {
+  min-width: 300px;
+  max-width: min(560px, 100%);
+}
+
+.series-select {
+  min-width: 160px;
+}
+
+.score-search {
+  width: 170px;
+}
+
+.library-count {
+  color: var(--muted);
+  font-size: 13px;
+  white-space: nowrap;
+}
+
 #playBtn { background: var(--accent); border-color: var(--accent); }
 #playBtn:hover:not(:disabled) { background: #3f7af0; }
 
@@ -64,6 +92,14 @@ header h1 { margin: 0 0 4px; font-size: 22px; }
 
 .toggle { display: flex; align-items: center; gap: 6px; font-size: 13px; color: var(--muted); cursor: pointer; }
 .toggle input { cursor: pointer; }
+
+@media (max-width: 720px) {
+  .series-select,
+  .score-search,
+  #sampleSelect {
+    width: 100%;
+  }
+}
 
 .progress-wrap {
   display: flex;
@@ -160,13 +196,13 @@ header h1 { margin: 0 0 4px; font-size: 22px; }
   opacity: 0;
 }
 
-/* 乐谱区:固定高度的滚动视窗,约显示两行,光标随播放一行行上滚 */
+/* 乐谱区:高度由 JS 按当前谱子的系统高度自适应,光标随播放按系统上滚 */
 .score-wrap {
   background: #fff;
   border-radius: 10px;
   margin-top: 16px;
   padding: 10px;
-  height: 380px; /* 默认值;加载后由 JS 按行距动态设为"正好两行" */
+  height: 380px;
   overflow-y: auto;
   overflow-x: hidden; /* OSMD 已自适应宽度,无需横向滚动 */
   scroll-behavior: smooth;

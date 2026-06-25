@@ -16,6 +16,7 @@ const MIME = {
   ".musicxml": "application/vnd.recordare.musicxml+xml; charset=utf-8",
   ".xml": "application/xml; charset=utf-8",
   ".mxl": "application/vnd.recordare.musicxml",
+  ".mxl_": "application/vnd.recordare.musicxml",
   ".mp3": "audio/mpeg",
   ".svg": "image/svg+xml",
   ".ico": "image/x-icon",

@@ -1,0 +1,559 @@
+{
+  "source": "MuseTrainer Library",
+  "generatedAt": "2026-06-25T16:33:11.558993+00:00",
+  "count": 69,
+  "works": [
+    {
+      "id": "J._S._Bach_-_Air_on_the_G_String_Piano_arrangement",
+      "title": "Air",
+      "authors": "",
+      "type": "mxl",
+      "url": "musetrainer/scores/J._S._Bach_-_Air_on_the_G_String_Piano_arrangement.mxl",
+      "sourcePath": "scores/J._S._Bach_-_Air_on_the_G_String_Piano_arrangement.mxl"
+    },
+    {
+      "id": "Arabesque_L._66_No._1_in_E_Major",
+      "title": "Arabesque No. 1 in E Major",
+      "authors": "",
+      "type": "mxl",
+      "url": "musetrainer/scores/Arabesque_L._66_No._1_in_E_Major.mxl",
+      "sourcePath": "scores/Arabesque_L._66_No._1_in_E_Major.mxl"
+    },
+    {
+      "id": "Ave_Maria_D839_-_Schubert_-_Solo_Piano_Arrg.",
+      "title": "Ave Maria",
+      "authors": "",
+      "type": "mxl",
+      "url": "musetrainer/scores/Ave_Maria_D839_-_Schubert_-_Solo_Piano_Arrg..mxl",
+      "sourcePath": "scores/Ave_Maria_D839_-_Schubert_-_Solo_Piano_Arrg..mxl"
+    },
+    {
+      "id": "Bach_Minuet_in_G_Major_BWV_Anh._114",
+      "title": "Bach Minuet in G Major BWV Anh. 114",
+      "authors": "",
+      "type": "mxl",
+      "url": "musetrainer/scores/Bach_Minuet_in_G_Major_BWV_Anh._114.mxl",
+      "sourcePath": "scores/Bach_Minuet_in_G_Major_BWV_Anh._114.mxl"
+    },
+    {
+      "id": "Bach_Toccata_and_Fugue_in_D_Minor_Piano_solo",
+      "title": "Bach Toccata and Fugue in D Minor Piano solo",
+      "authors": "",
+      "type": "mxl",
+      "url": "musetrainer/scores/Bach_Toccata_and_Fugue_in_D_Minor_Piano_solo.mxl",
+      "sourcePath": "scores/Bach_Toccata_and_Fugue_in_D_Minor_Piano_solo.mxl"
+    },
+    {
+      "id": "Chopin_-_Ballade_no._1_in_G_minor_Op._23",
+      "title": "Ballade I",
+      "authors": "",
+      "type": "mxl",
+      "url": "musetrainer/scores/Chopin_-_Ballade_no._1_in_G_minor_Op._23.mxl",
+      "sourcePath": "scores/Chopin_-_Ballade_no._1_in_G_minor_Op._23.mxl"
+    },
+    {
+      "id": "Beethoven_Symphony_No._5_1st_movement_Piano_solo",
+      "title": "Beethoven Symphony No. 5 1st movement Piano solo",
+      "authors": "",
+      "type": "mxl",
+      "url": "musetrainer/scores/Beethoven_Symphony_No._5_1st_movement_Piano_solo.mxl",
+      "sourcePath": "scores/Beethoven_Symphony_No._5_1st_movement_Piano_solo.mxl"
+    },
+    {
+      "id": "Bella_Ciao_-_La_Casa_de_Papel",
+      "title": "Bella Ciao",
+      "authors": "",
+      "type": "mxl",
+      "url": "musetrainer/scores/Bella_Ciao_-_La_Casa_de_Papel.mxl",
+      "sourcePath": "scores/Bella_Ciao_-_La_Casa_de_Papel.mxl"
+    },
+    {
+      "id": "Bella_Ciao",
+      "title": "Bella Ciao - Piano",
+      "authors": "",
+      "type": "mxl",
+      "url": "musetrainer/scores/Bella_Ciao.mxl",
+      "sourcePath": "scores/Bella_Ciao.mxl"
+    },
+    {
+      "id": "Canon_in_D",
+      "title": "Canon in D",
+      "authors": "",
+      "type": "mxl",
+      "url": "musetrainer/scores/Canon_in_D.mxl",
+      "sourcePath": "scores/Canon_in_D.mxl"
+    },
+    {
+      "id": "Canon_in_D_3",
+      "title": "Canon in D (2)",
+      "authors": "",
+      "type": "mxl",
+      "url": "musetrainer/scores/Canon_in_D_3.mxl",
+      "sourcePath": "scores/Canon_in_D_3.mxl"
+    },
+    {
+      "id": "Canon_in_D_easy",
+      "title": "Canon in D (3)",
+      "authors": "",
+      "type": "mxl",
+      "url": "musetrainer/scores/Canon_in_D_easy.mxl",
+      "sourcePath": "scores/Canon_in_D_easy.mxl"
+    },
+    {
+      "id": "Carol_of_the_Bells",
+      "title": "Carol of the bells",
+      "authors": "",
+      "type": "mxl",
+      "url": "musetrainer/scores/Carol_of_the_Bells.mxl",
+      "sourcePath": "scores/Carol_of_the_Bells.mxl"
+    },
+    {
+      "id": "Carol_of_the_Bells_easy_piano",
+      "title": "Carol of the Bells easy piano",
+      "authors": "",
+      "type": "mxl",
+      "url": "musetrainer/scores/Carol_of_the_Bells_easy_piano.mxl",
+      "sourcePath": "scores/Carol_of_the_Bells_easy_piano.mxl"
+    },
+    {
+      "id": "Chopin_-_Nocturne_Op._9_No._1",
+      "title": "Chopin - Nocturne Op. 9 No. 1",
+      "authors": "",
+      "type": "mxl",
+      "url": "musetrainer/scores/Chopin_-_Nocturne_Op._9_No._1.mxl",
+      "sourcePath": "scores/Chopin_-_Nocturne_Op._9_No._1.mxl"
+    },
+    {
+      "id": "Clair_de_Lune__Debussy",
+      "title": "Clair de Lune",
+      "authors": "",
+      "type": "mxl",
+      "url": "musetrainer/scores/Clair_de_Lune__Debussy.mxl",
+      "sourcePath": "scores/Clair_de_Lune__Debussy.mxl"
+    },
+    {
+      "id": "Clair_de_lune_-_Claude_Debussy",
+      "title": "Claire de lune",
+      "authors": "",
+      "type": "mxl",
+      "url": "musetrainer/scores/Clair_de_lune_-_Claude_Debussy.mxl",
+      "sourcePath": "scores/Clair_de_lune_-_Claude_Debussy.mxl"
+    },
+    {
+      "id": "Dance_of_the_sugar_plum_fairy",
+      "title": "Dance Of the Sugar Plum Fairy",
+      "authors": "",
+      "type": "mxl",
+      "url": "musetrainer/scores/Dance_of_the_sugar_plum_fairy.mxl",
+      "sourcePath": "scores/Dance_of_the_sugar_plum_fairy.mxl"
+    },
+    {
+      "id": "DANSE_VILLAGEOISE_Beethoven",
+      "title": "DANSE VILLAGEOISE Beethoven",
+      "authors": "",
+      "type": "mxl",
+      "url": "musetrainer/scores/DANSE_VILLAGEOISE_Beethoven.mxl",
+      "sourcePath": "scores/DANSE_VILLAGEOISE_Beethoven.mxl"
+    },
+    {
+      "id": "Erik_Satie_-_Gymnopedie_No.1",
+      "title": "Erik Satie - Gymnopedie No.1",
+      "authors": "",
+      "type": "mxl",
+      "url": "musetrainer/scores/Erik_Satie_-_Gymnopedie_No.1.mxl",
+      "sourcePath": "scores/Erik_Satie_-_Gymnopedie_No.1.mxl"
+    },
+    {
+      "id": "Flight_of_the_Bumblebee",
+      "title": "Flight of the Bumblebee",
+      "authors": "",
+      "type": "mxl",
+      "url": "musetrainer/scores/Flight_of_the_Bumblebee.mxl",
+      "sourcePath": "scores/Flight_of_the_Bumblebee.mxl"
+    },
+    {
+      "id": "Fur_Elise_Easy_Piano",
+      "title": "Fur Elise",
+      "authors": "",
+      "type": "mxl",
+      "url": "musetrainer/scores/Fur_Elise_Easy_Piano.mxl",
+      "sourcePath": "scores/Fur_Elise_Easy_Piano.mxl"
+    },
+    {
+      "id": "Fur_Elise_-_Beethoven_-_for_beginner_piano",
+      "title": "Fur Elise - Beethoven - for beginner piano",
+      "authors": "",
+      "type": "mxl",
+      "url": "musetrainer/scores/Fur_Elise_-_Beethoven_-_for_beginner_piano.mxl",
+      "sourcePath": "scores/Fur_Elise_-_Beethoven_-_for_beginner_piano.mxl"
+    },
+    {
+      "id": "Fur_Elise_fingered",
+      "title": "Für Elise",
+      "authors": "",
+      "type": "mxl",
+      "url": "musetrainer/scores/Fur_Elise_fingered.mxl",
+      "sourcePath": "scores/Fur_Elise_fingered.mxl"
+    },
+    {
+      "id": "Fur_Elise",
+      "title": "Für Elise in A Minor",
+      "authors": "",
+      "type": "mxl",
+      "url": "musetrainer/scores/Fur_Elise.mxl",
+      "sourcePath": "scores/Fur_Elise.mxl"
+    },
+    {
+      "id": "G_Minor_Bach",
+      "title": "G minor",
+      "authors": "",
+      "type": "mxl",
+      "url": "musetrainer/scores/G_Minor_Bach.mxl",
+      "sourcePath": "scores/G_Minor_Bach.mxl"
+    },
+    {
+      "id": "G_Minor_Bach_Original",
+      "title": "G Minor Bach",
+      "authors": "",
+      "type": "mxl",
+      "url": "musetrainer/scores/G_Minor_Bach_Original.mxl",
+      "sourcePath": "scores/G_Minor_Bach_Original.mxl"
+    },
+    {
+      "id": "Gnossienne_No._1",
+      "title": "Gnossienne No. 1",
+      "authors": "",
+      "type": "mxl",
+      "url": "musetrainer/scores/Gnossienne_No._1.mxl",
+      "sourcePath": "scores/Gnossienne_No._1.mxl"
+    },
+    {
+      "id": "Greensleeves_for_Piano_easy_and_beautiful",
+      "title": "Greensleeves",
+      "authors": "",
+      "type": "mxl",
+      "url": "musetrainer/scores/Greensleeves_for_Piano_easy_and_beautiful.mxl",
+      "sourcePath": "scores/Greensleeves_for_Piano_easy_and_beautiful.mxl"
+    },
+    {
+      "id": "Gymnopdie_No._1__Satie",
+      "title": "Gymnopédie No. 1",
+      "authors": "",
+      "type": "mxl",
+      "url": "musetrainer/scores/Gymnopdie_No._1__Satie.mxl",
+      "sourcePath": "scores/Gymnopdie_No._1__Satie.mxl"
+    },
+    {
+      "id": "Happy_Birthday_To_You_Piano",
+      "title": "Happy Birthday To You",
+      "authors": "",
+      "type": "mxl",
+      "url": "musetrainer/scores/Happy_Birthday_To_You_Piano.mxl",
+      "sourcePath": "scores/Happy_Birthday_To_You_Piano.mxl"
+    },
+    {
+      "id": "Happy_Birthday_To_You_C_Major",
+      "title": "Happy Birthday To You C Major",
+      "authors": "",
+      "type": "mxl",
+      "url": "musetrainer/scores/Happy_Birthday_To_You_C_Major.mxl",
+      "sourcePath": "scores/Happy_Birthday_To_You_C_Major.mxl"
+    },
+    {
+      "id": "Hungarian_Dance_No_5_in_G_Minor",
+      "title": "Hungarian Dance No. 5 in G Minor",
+      "authors": "",
+      "type": "mxl",
+      "url": "musetrainer/scores/Hungarian_Dance_No_5_in_G_Minor.mxl",
+      "sourcePath": "scores/Hungarian_Dance_No_5_in_G_Minor.mxl"
+    },
+    {
+      "id": "Hungarian_Sonata",
+      "title": "Hungarian Sonata",
+      "authors": "",
+      "type": "mxl",
+      "url": "musetrainer/scores/Hungarian_Sonata.mxl",
+      "sourcePath": "scores/Hungarian_Sonata.mxl"
+    },
+    {
+      "id": "La_Campanella_-_Grandes_Etudes_de_Paganini_No._3_-_Franz_Liszt",
+      "title": "La Campanella",
+      "authors": "",
+      "type": "mxl",
+      "url": "musetrainer/scores/La_Campanella_-_Grandes_Etudes_de_Paganini_No._3_-_Franz_Liszt.mxl",
+      "sourcePath": "scores/La_Campanella_-_Grandes_Etudes_de_Paganini_No._3_-_Franz_Liszt.mxl"
+    },
+    {
+      "id": "Lacrimosa_-_Requiem",
+      "title": "Lacrimosa - Requiem",
+      "authors": "",
+      "type": "mxl",
+      "url": "musetrainer/scores/Lacrimosa_-_Requiem.mxl",
+      "sourcePath": "scores/Lacrimosa_-_Requiem.mxl"
+    },
+    {
+      "id": "Liebestraum_No._3_in_A_Major",
+      "title": "Liebestraum No. 3 in A♭ Major",
+      "authors": "",
+      "type": "mxl",
+      "url": "musetrainer/scores/Liebestraum_No._3_in_A_Major.mxl",
+      "sourcePath": "scores/Liebestraum_No._3_in_A_Major.mxl"
+    },
+    {
+      "id": "Maple_Leaf_Rag_Scott_Joplin",
+      "title": "Maple Leaf Rag Scott Joplin",
+      "authors": "",
+      "type": "mxl",
+      "url": "musetrainer/scores/Maple_Leaf_Rag_Scott_Joplin.mxl",
+      "sourcePath": "scores/Maple_Leaf_Rag_Scott_Joplin.mxl"
+    },
+    {
+      "id": "Mariage_dAmour",
+      "title": "Mariage d'Amoure",
+      "authors": "",
+      "type": "mxl",
+      "url": "musetrainer/scores/Mariage_dAmour.mxl",
+      "sourcePath": "scores/Mariage_dAmour.mxl"
+    },
+    {
+      "id": "Chopin_-_Spring_Waltz",
+      "title": "MARRIAGE D'AMOUR",
+      "authors": "",
+      "type": "mxl",
+      "url": "musetrainer/scores/Chopin_-_Spring_Waltz.mxl",
+      "sourcePath": "scores/Chopin_-_Spring_Waltz.mxl"
+    },
+    {
+      "id": "Minuet_in_G_Major_Bach",
+      "title": "Minuet in G Major Bach",
+      "authors": "",
+      "type": "mxl",
+      "url": "musetrainer/scores/Minuet_in_G_Major_Bach.mxl",
+      "sourcePath": "scores/Minuet_in_G_Major_Bach.mxl"
+    },
+    {
+      "id": "moonlight_sonata_3rd_movement",
+      "title": "Moonlight sonata",
+      "authors": "",
+      "type": "mxl",
+      "url": "musetrainer/scores/moonlight_sonata_3rd_movement.mxl",
+      "sourcePath": "scores/moonlight_sonata_3rd_movement.mxl"
+    },
+    {
+      "id": "Mozart_-_Piano_Sonata_No._16_-_Allegro",
+      "title": "Mozart - Piano Sonata No. 16 - Allegro",
+      "authors": "",
+      "type": "mxl",
+      "url": "musetrainer/scores/Mozart_-_Piano_Sonata_No._16_-_Allegro.mxl",
+      "sourcePath": "scores/Mozart_-_Piano_Sonata_No._16_-_Allegro.mxl"
+    },
+    {
+      "id": "Nocturne_in_E-flat_Major_Op._9_No._2_Easy",
+      "title": "Nocturne",
+      "authors": "",
+      "type": "mxl",
+      "url": "musetrainer/scores/Nocturne_in_E-flat_Major_Op._9_No._2_Easy.mxl",
+      "sourcePath": "scores/Nocturne_in_E-flat_Major_Op._9_No._2_Easy.mxl"
+    },
+    {
+      "id": "Chopin_-_Nocturne_Op_9_No_2_E_Flat_Major",
+      "title": "Nocturne  Op.9  No.2",
+      "authors": "",
+      "type": "mxl",
+      "url": "musetrainer/scores/Chopin_-_Nocturne_Op_9_No_2_E_Flat_Major.mxl",
+      "sourcePath": "scores/Chopin_-_Nocturne_Op_9_No_2_E_Flat_Major.mxl"
+    },
+    {
+      "id": "Nocturne_in_C_sharp_Minor",
+      "title": "Nocturne in C sharp Minor",
+      "authors": "",
+      "type": "mxl",
+      "url": "musetrainer/scores/Nocturne_in_C_sharp_Minor.mxl",
+      "sourcePath": "scores/Nocturne_in_C_sharp_Minor.mxl"
+    },
+    {
+      "id": "Nocturne_No._20_in_C_Minor",
+      "title": "Nocturne No. 20 in C Minor",
+      "authors": "",
+      "type": "mxl",
+      "url": "musetrainer/scores/Nocturne_No._20_in_C_Minor.mxl",
+      "sourcePath": "scores/Nocturne_No._20_in_C_Minor.mxl"
+    },
+    {
+      "id": "Ode_to_Joy_Easy_variation",
+      "title": "Ode to Joy Easy variation",
+      "authors": "",
+      "type": "mxl",
+      "url": "musetrainer/scores/Ode_to_Joy_Easy_variation.mxl",
+      "sourcePath": "scores/Ode_to_Joy_Easy_variation.mxl"
+    },
+    {
+      "id": "Passacaglia",
+      "title": "Passacaglia",
+      "authors": "",
+      "type": "mxl",
+      "url": "musetrainer/scores/Passacaglia.mxl",
+      "sourcePath": "scores/Passacaglia.mxl"
+    },
+    {
+      "id": "Passacaglia2",
+      "title": "Passacaglia2",
+      "authors": "",
+      "type": "mxl",
+      "url": "musetrainer/scores/Passacaglia2.mxl",
+      "sourcePath": "scores/Passacaglia2.mxl"
+    },
+    {
+      "id": "Piano_Sonata_No._11_K._331_3rd_Movement_Rondo_alla_Turca",
+      "title": "Piano Sonata No. 11 K. 331 3rd Movement Rondo alla Turca",
+      "authors": "",
+      "type": "mxl",
+      "url": "musetrainer/scores/Piano_Sonata_No._11_K._331_3rd_Movement_Rondo_alla_Turca.mxl",
+      "sourcePath": "scores/Piano_Sonata_No._11_K._331_3rd_Movement_Rondo_alla_Turca.mxl"
+    },
+    {
+      "id": "Prelude_I_in_C_major_BWV_846_-_Well_Tempered_Clavier_First_Book",
+      "title": "Prelude I in C major BWV 846 - Well Tempered Clavier First Book",
+      "authors": "",
+      "type": "mxl",
+      "url": "musetrainer/scores/Prelude_I_in_C_major_BWV_846_-_Well_Tempered_Clavier_First_Book.mxl",
+      "sourcePath": "scores/Prelude_I_in_C_major_BWV_846_-_Well_Tempered_Clavier_First_Book.mxl"
+    },
+    {
+      "id": "Prelude_No._2_BWV_847_in_C_Minor",
+      "title": "Prelude No. 2 BWV 847 in C Minor",
+      "authors": "",
+      "type": "mxl",
+      "url": "musetrainer/scores/Prelude_No._2_BWV_847_in_C_Minor.mxl",
+      "sourcePath": "scores/Prelude_No._2_BWV_847_in_C_Minor.mxl"
+    },
+    {
+      "id": "Prlude_No._4_in_E_Minor_Op._28_-_Frdric_Chopin",
+      "title": "Prélude in E Minor",
+      "authors": "",
+      "type": "mxl",
+      "url": "musetrainer/scores/Prlude_No._4_in_E_Minor_Op._28_-_Frdric_Chopin.mxl",
+      "sourcePath": "scores/Prlude_No._4_in_E_Minor_Op._28_-_Frdric_Chopin.mxl"
+    },
+    {
+      "id": "Prlude_Opus_28_No._4_in_E_Minor__Chopin",
+      "title": "Prélude in E Minor (2)",
+      "authors": "",
+      "type": "mxl",
+      "url": "musetrainer/scores/Prlude_Opus_28_No._4_in_E_Minor__Chopin.mxl",
+      "sourcePath": "scores/Prlude_Opus_28_No._4_in_E_Minor__Chopin.mxl"
+    },
+    {
+      "id": "Sonata_No._16_1st_Movement_K._545",
+      "title": "Sonata No. 16 1st Movement K. 545",
+      "authors": "",
+      "type": "mxl",
+      "url": "musetrainer/scores/Sonata_No._16_1st_Movement_K._545.mxl",
+      "sourcePath": "scores/Sonata_No._16_1st_Movement_K._545.mxl"
+    },
+    {
+      "id": "Sonate_No._14_Moonlight_1st_Movement",
+      "title": "Sonate No. 14 Moonlight 1st Movement",
+      "authors": "",
+      "type": "mxl",
+      "url": "musetrainer/scores/Sonate_No._14_Moonlight_1st_Movement.mxl",
+      "sourcePath": "scores/Sonate_No._14_Moonlight_1st_Movement.mxl"
+    },
+    {
+      "id": "Sonate_No._14_Moonlight_3rd_Movement",
+      "title": "Sonate No. 14 Moonlight 3rd Movement",
+      "authors": "",
+      "type": "mxl",
+      "url": "musetrainer/scores/Sonate_No._14_Moonlight_3rd_Movement.mxl",
+      "sourcePath": "scores/Sonate_No._14_Moonlight_3rd_Movement.mxl"
+    },
+    {
+      "id": "Sonate_No._8_Pathetique_2nd_Movement",
+      "title": "Sonate No. 8 Pathetique 2nd Movement",
+      "authors": "",
+      "type": "mxl",
+      "url": "musetrainer/scores/Sonate_No._8_Pathetique_2nd_Movement.mxl",
+      "sourcePath": "scores/Sonate_No._8_Pathetique_2nd_Movement.mxl"
+    },
+    {
+      "id": "Schubert_Serenade_-_Standchen_-_By_Lizst",
+      "title": "Song",
+      "authors": "",
+      "type": "mxl",
+      "url": "musetrainer/scores/Schubert_Serenade_-_Standchen_-_By_Lizst.mxl",
+      "sourcePath": "scores/Schubert_Serenade_-_Standchen_-_By_Lizst.mxl"
+    },
+    {
+      "id": "Spring_Waltz_Mariage_dAmour_-_Chopin",
+      "title": "Spring Waltz",
+      "authors": "",
+      "type": "mxl",
+      "url": "musetrainer/scores/Spring_Waltz_Mariage_dAmour_-_Chopin.mxl",
+      "sourcePath": "scores/Spring_Waltz_Mariage_dAmour_-_Chopin.mxl"
+    },
+    {
+      "id": "Swan_Lake",
+      "title": "Swan Lake",
+      "authors": "",
+      "type": "mxl",
+      "url": "musetrainer/scores/Swan_Lake.mxl",
+      "sourcePath": "scores/Swan_Lake.mxl"
+    },
+    {
+      "id": "The_Entertainer_-_Scott_Joplin",
+      "title": "The Entertainer - Scott Joplin",
+      "authors": "",
+      "type": "mxl",
+      "url": "musetrainer/scores/The_Entertainer_-_Scott_Joplin.mxl",
+      "sourcePath": "scores/The_Entertainer_-_Scott_Joplin.mxl"
+    },
+    {
+      "id": "The_Entertainer_-_Scott_Joplin_-_1902",
+      "title": "The Entertainer.",
+      "authors": "",
+      "type": "mxl",
+      "url": "musetrainer/scores/The_Entertainer_-_Scott_Joplin_-_1902.mxl",
+      "sourcePath": "scores/The_Entertainer_-_Scott_Joplin_-_1902.mxl"
+    },
+    {
+      "id": "12_Variations_of_Twinkle_Twinkle_Little_Star",
+      "title": "Twinkle Twinkle Little Star",
+      "authors": "",
+      "type": "mxl",
+      "url": "musetrainer/scores/12_Variations_of_Twinkle_Twinkle_Little_Star.mxl",
+      "sourcePath": "scores/12_Variations_of_Twinkle_Twinkle_Little_Star.mxl"
+    },
+    {
+      "id": "WA_Mozart_Marche_Turque_Turkish_March_fingered",
+      "title": "WA Mozart Marche Turque Turkish March fingered",
+      "authors": "",
+      "type": "mxl",
+      "url": "musetrainer/scores/WA_Mozart_Marche_Turque_Turkish_March_fingered.mxl",
+      "sourcePath": "scores/WA_Mozart_Marche_Turque_Turkish_March_fingered.mxl"
+    },
+    {
+      "id": "Waltz_in_A_MinorChopin",
+      "title": "Waltz in A MinorChopin",
+      "authors": "",
+      "type": "mxl",
+      "url": "musetrainer/scores/Waltz_in_A_MinorChopin.mxl",
+      "sourcePath": "scores/Waltz_in_A_MinorChopin.mxl"
+    },
+    {
+      "id": "Waltz_of_the_Flowers",
+      "title": "Waltz of the Flowers",
+      "authors": "",
+      "type": "mxl",
+      "url": "musetrainer/scores/Waltz_of_the_Flowers.mxl",
+      "sourcePath": "scores/Waltz_of_the_Flowers.mxl"
+    },
+    {
+      "id": "Waltz_Opus_64_No._2_in_C_Minor",
+      "title": "Waltz Opus 64 No. 2 in C Minor",
+      "authors": "",
+      "type": "mxl",
+      "url": "musetrainer/scores/Waltz_Opus_64_No._2_in_C_Minor.mxl",
+      "sourcePath": "scores/Waltz_Opus_64_No._2_in_C_Minor.mxl"
+    }
+  ]
+}

@@ -22,14 +22,11 @@
       上传 MusicXML
       <input type="file" id="fileInput" accept=".xml,.musicxml,.mxl" />
     </label>
-    <select id="sampleSelect">
-      <option value="samples/twinkle.musicxml">小星星 Twinkle</option>
-      <option value="samples/ode-to-joy.musicxml">欢乐颂 Ode to Joy</option>
-      <option value="samples/fur-elise.musicxml">致爱丽丝 Für Elise</option>
-      <option value="samples/happy-birthday.musicxml">生日快乐 Happy Birthday</option>
-      <option value="samples/jingle-bells.musicxml">铃儿响叮当 Jingle Bells</option>
-    </select>
-    <button id="loadSampleBtn">加载样例</button>
+    <select id="seriesSelect" class="series-select"></select>
+    <input type="search" id="scoreSearch" class="score-search" placeholder="搜索谱库" autocomplete="off" />
+    <select id="sampleSelect"></select>
+    <button id="loadSampleBtn">加载乐谱</button>
+    <span class="library-count" id="libraryCount"></span>
 
     <span class="divider"></span>
 
@@ -40,6 +37,11 @@
     <label class="tempo">
       速度 <span id="tempoVal">100</span>%
       <input type="range" id="tempoSlider" min="40" max="160" value="100" />
+    </label>
+
+    <label class="tempo score-zoom">
+      谱面 <span id="scoreZoomVal">90</span>%
+      <input type="range" id="scoreZoomSlider" min="45" max="120" value="90" />
     </label>
 
     <label class="toggle">

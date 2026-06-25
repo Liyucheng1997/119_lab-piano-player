@@ -10,6 +10,12 @@
   const timeLabel = $("timeLabel");
   const tempoSlider = $("tempoSlider");
   const tempoVal = $("tempoVal");
+  const scoreZoomSlider = $("scoreZoomSlider");
+  const scoreZoomVal = $("scoreZoomVal");
+  const seriesSelect = $("seriesSelect");
+  const scoreSearch = $("scoreSearch");
+  const sampleSelect = $("sampleSelect");
+  const libraryCount = $("libraryCount");
 
   let osmd = null;
   let sampler = null;
@@ -18,12 +24,26 @@
   let scheduledIds = [];
   let rafId = null;
   let tempoScale = 1.0; // 速度倍率
+  let scoreZoom = 0.9; // 乐谱缩放倍率,双手谱默认略缩小以显示完整系统
   let cursorTimes = []; // 每个光标步对应的时间(秒,原速),用于同步五线谱光标
   let cursorPositions = []; // 每步的屏幕位置 {x, y, time, index},用于点击定位
-  let lineGap = 0; // 行距(相邻系统五线谱顶部之差)
+  let scoreSystems = []; // 每个乐谱系统的位置 {top, bottom, height}
   let cursorIndex = 0; // 当前光标已推进到第几步
-  let curLineTop = null; // 当前行的纵向位置
-  let prevLineTop = 0; // 上一行的纵向位置(用于把当前行定位到第二行)
+  let curLineTop = null; // 当前系统的纵向位置
+
+  const builtinSamples = [
+    { title: "小星星 Twinkle", url: "samples/twinkle.musicxml", type: "musicxml" },
+    { title: "欢乐颂 Ode to Joy", url: "samples/ode-to-joy.musicxml", type: "musicxml" },
+    { title: "致爱丽丝 Fur Elise", url: "samples/fur-elise.musicxml", type: "musicxml" },
+    { title: "生日快乐 Happy Birthday", url: "samples/happy-birthday.musicxml", type: "musicxml" },
+    { title: "铃儿响叮当 Jingle Bells", url: "samples/jingle-bells.musicxml", type: "musicxml" },
+  ];
+
+  const librarySeries = [
+    { id: "builtin", label: "示例系列", works: builtinSamples, loaded: true },
+    { id: "openewld", label: "OpenEWLD", manifestUrl: "openewld/manifest.json", works: [], loaded: false },
+    { id: "musetrainer", label: "MuseTrainer", manifestUrl: "musetrainer/manifest.json", works: [], loaded: false },
+  ];
 
   function setStatus(msg, isError) {
     statusEl.textContent = msg;
@@ -37,14 +57,156 @@
     return m + ":" + String(s).padStart(2, "0");
   }
 
+  function applyScoreZoom() {
+    scoreZoom = parseInt(scoreZoomSlider.value, 10) / 100;
+    scoreZoomVal.textContent = scoreZoomSlider.value;
+    if (!osmd) return;
+    // OSMD 使用 Zoom/zoom 缩放内部 SVG,这样光标位置、点击定位和滚动仍在同一坐标系里。
+    osmd.Zoom = scoreZoom;
+    osmd.zoom = scoreZoom;
+  }
+
+  function rerenderScoreLayout(options = {}) {
+    if (!osmd || !parsed) return;
+    const wasPlaying = Tone.Transport.state === "started";
+    if (wasPlaying) stopPlayback();
+    applyScoreZoom();
+    osmd.render();
+    buildCursorTimeline({ autoFit: options.autoFit !== false });
+    scrollCursorIntoView();
+    updateProgress(0);
+  }
+
+  function optionText(item) {
+    const author = item.authors ? " - " + item.authors : "";
+    const meta = [item.metric, item.tonality].filter(Boolean).join(", ");
+    return item.title + author + (meta ? " (" + meta + ")" : "");
+  }
+
+  function matchesScore(item, query) {
+    if (!query) return true;
+    const haystack = [
+      item.title,
+      item.authors,
+      item.metric,
+      item.tonality,
+      item.genres,
+      item.styles,
+    ].join(" ").toLocaleLowerCase();
+    return haystack.includes(query);
+  }
+
+  function appendOption(group, item) {
+    const opt = document.createElement("option");
+    opt.value = item.url;
+    opt.textContent = optionText(item);
+    opt.dataset.type = item.type;
+    opt.dataset.label = item.title;
+    group.appendChild(opt);
+  }
+
+  function currentSeries() {
+    return librarySeries.find((series) => series.id === seriesSelect.value) || librarySeries[0];
+  }
+
+  function renderSeriesOptions() {
+    const previous = seriesSelect.value || librarySeries[0].id;
+    seriesSelect.innerHTML = "";
+    librarySeries.forEach((series) => {
+      const opt = document.createElement("option");
+      opt.value = series.id;
+      const suffix = series.loaded
+        ? " (" + series.works.length + " 首)"
+        : series.failed
+          ? " (未导入)"
+          : " (载入中)";
+      opt.textContent = series.label + suffix;
+      seriesSelect.appendChild(opt);
+    });
+    const previousOption = Array.from(seriesSelect.options).find((opt) => opt.value === previous);
+    if (previousOption) previousOption.selected = true;
+  }
+
+  function renderSampleOptions() {
+    renderSeriesOptions();
+    const series = currentSeries();
+    const previous = sampleSelect.value;
+    const query = scoreSearch.value.trim().toLocaleLowerCase();
+    sampleSelect.innerHTML = "";
+
+    if (!series.loaded) {
+      const empty = document.createElement("option");
+      empty.disabled = true;
+      empty.textContent = series.failed ? "该系列未导入" : "正在载入该系列…";
+      sampleSelect.appendChild(empty);
+      libraryCount.textContent = series.label + (series.failed ? " 未导入" : " 载入中");
+      return;
+    }
+
+    const filtered = series.works.filter((item) => matchesScore(item, query));
+    filtered.forEach((item) => appendOption(sampleSelect, item));
+    if (!filtered.length) {
+      const empty = document.createElement("option");
+      empty.disabled = true;
+      empty.textContent = query ? "没有匹配的乐谱" : "该系列没有乐谱";
+      sampleSelect.appendChild(empty);
+    }
+
+    const previousOption = Array.from(sampleSelect.options).find((opt) => opt.value === previous);
+    if (previousOption) previousOption.selected = true;
+    libraryCount.textContent =
+      series.label + " " + series.works.length + " 首" + (query ? " / 匹配 " + filtered.length + " 首" : "");
+  }
+
+  async function loadSeriesManifest(series) {
+    if (!series.manifestUrl || series.loaded) return;
+    try {
+      const res = await fetch(series.manifestUrl);
+      if (!res.ok) throw new Error("HTTP " + res.status);
+      const manifest = await res.json();
+      series.works = (manifest.works || []).map((item) => ({ ...item, type: item.type || "mxl" }));
+      series.loaded = true;
+    } catch (e) {
+      series.failed = true;
+      console.warn(series.label + " manifest load failed:", e);
+    }
+    renderSampleOptions();
+  }
+
+  function loadLibrarySeries() {
+    librarySeries.forEach((series) => loadSeriesManifest(series));
+  }
+
+  function selectedScoreSource() {
+    const opt = sampleSelect.selectedOptions[0];
+    if (!opt || opt.disabled) return null;
+    return {
+      url: opt.value,
+      type: opt.dataset.type || "",
+      label: opt.dataset.label || opt.textContent,
+    };
+  }
+
+  async function fetchScoreText(source) {
+    const res = await fetch(source.url);
+    if (!res.ok) throw new Error("HTTP " + res.status);
+    const isMxl = source.type === "mxl" || /\.(mxl|mxl_)($|[?#])/i.test(source.url);
+    if (isMxl) {
+      return decodeMxl(await res.arrayBuffer());
+    }
+    return res.text();
+  }
+
   // 初始化 OSMD
   function initOSMD() {
     osmd = new opensheetmusicdisplay.OpenSheetMusicDisplay("osmdContainer", {
       autoResize: true,
       drawTitle: true,
+      drawingParameters: "compacttight",
       backend: "svg",
       followCursor: false, // 不用 OSMD 默认滚动(会滚动整页),改为手动在乐谱视窗内滚动
     });
+    applyScoreZoom();
   }
 
   // 懒加载钢琴采样器(Salamander 真实钢琴音色,走 Tone.js 官方 CDN)
@@ -77,6 +239,7 @@
     try {
       setStatus("正在渲染乐谱…");
       await osmd.load(xmlText);
+      applyScoreZoom();
       osmd.render();
     } catch (e) {
       setStatus("乐谱渲染失败:" + e.message, true);
@@ -97,7 +260,7 @@
     Piano.build("piano", Piano.ensureRange(midis));
 
     // 预扫描五线谱光标时间轴
-    buildCursorTimeline();
+    buildCursorTimeline({ autoFit: true });
 
     initSampler();
     playBtn.disabled = false;
@@ -111,15 +274,16 @@
 
   // 预扫描 OSMD 光标,记录每一步的音乐时间(秒,原速)。
   // 光标按时间戳逐"列"推进(含休止符),与音频用同一速度换算即可对齐。
-  function buildCursorTimeline() {
+  function buildCursorTimeline(options = {}) {
     cursorTimes = [];
     cursorPositions = [];
+    scoreSystems = [];
     const cursor = osmd.cursor;
     if (!cursor) return;
     cursor.reset();
     cursor.show(); // 先显示,这样下面能读到光标元素的位置
     const wholeNoteSec = 240 / (parsed.tempo || 100); // 全音符秒数 = 4 拍 × 60/BPM
-    const lineTops = new Set(); // 各行(乐谱系统)的纵向位置,用于测行距
+    const systemsByTop = new Map(); // 各乐谱系统的纵向范围,双手谱会比单手谱高很多
     let guard = 0;
     while (!cursor.iterator.EndReached && guard < 100000) {
       const ts = cursor.iterator.currentTimeStamp.RealValue; // 距开头的全音符数
@@ -129,8 +293,17 @@
       if (img && img.style.top) {
         const y = parseFloat(img.style.top);
         const x = parseFloat(img.style.left) || 0;
-        lineTops.add(y);
-        cursorPositions.push({ x, y, time, index: guard });
+        const height = parseFloat(img.style.height) || img.getBoundingClientRect().height || 120;
+        const key = String(Math.round(y));
+        const existing = systemsByTop.get(key);
+        if (existing) {
+          existing.top = Math.min(existing.top, y);
+          existing.bottom = Math.max(existing.bottom, y + height);
+          existing.height = Math.max(existing.height, height);
+        } else {
+          systemsByTop.set(key, { top: y, bottom: y + height, height });
+        }
+        cursorPositions.push({ x, y, time, index: guard, systemTop: y });
       }
       cursor.next();
       guard++;
@@ -139,24 +312,48 @@
     cursor.show();
     cursorIndex = 0;
     resetCursorScroll();
-    // 按实测行距把乐谱视窗设成"正好两行"
-    fitViewportToTwoLines([...lineTops].sort((a, b) => a - b));
-    document.querySelector(".score-wrap").scrollTop = 0; // 加载时显示标题+第一行
+    const pendingAutoFit = fitViewportToSystems(
+      [...systemsByTop.values()].sort((a, b) => a.top - b.top),
+      { autoFit: options.autoFit !== false }
+    );
+    if (pendingAutoFit) return;
+    scrollCursorIntoView();
+    requestAnimationFrame(scrollCursorIntoView);
   }
 
-  // 根据相邻两行的间距,把视窗高度设为正好容纳两行(上一行 + 当前行),
-  // 避免第三行的和弦/音符冒出来。不同谱子行距不同,故动态计算。
-  function fitViewportToTwoLines(tops) {
+  function fitViewportToSystems(systems, options = {}) {
     const wrap = document.querySelector(".score-wrap");
-    if (tops.length >= 2) {
-      const gap = tops[1] - tops[0]; // 行距(相邻系统五线谱顶部之差)
-      lineGap = gap;
-      // 1.8×行距:完整显示当前行,同时把第三行(及其上方的和弦字母)切在窗口外
-      wrap.style.height = Math.round(1.8 * gap) + "px";
-    } else {
-      lineGap = 0;
-      wrap.style.height = ""; // 只有一行:用 CSS 默认高度
+    if (!systems.length) {
+      wrap.style.height = "";
+      return false;
     }
+    scoreSystems = systems.map((system, index) => {
+      const next = systems[index + 1];
+      const measuredHeight = Math.max(120, system.bottom - system.top, system.height);
+      const availableHeight = next ? Math.max(measuredHeight, next.top - system.top) : measuredHeight;
+      const height = Math.max(measuredHeight, Math.min(availableHeight, measuredHeight + 90));
+      return { top: system.top, bottom: system.top + height, height };
+    });
+    const maxSystemHeight = Math.max(...scoreSystems.map((system) => system.height));
+    const maxViewportHeight = Math.max(360, Math.min(820, window.innerHeight * 0.78));
+    const currentZoomPercent = parseInt(scoreZoomSlider.value, 10);
+    const minZoomPercent = parseInt(scoreZoomSlider.min, 10);
+    const maxContentHeight = Math.max(220, maxViewportHeight - 72);
+    if (options.autoFit && maxSystemHeight > maxContentHeight && currentZoomPercent > minZoomPercent) {
+      const fittedPercent = Math.max(
+        minZoomPercent,
+        Math.floor(currentZoomPercent * (maxContentHeight / maxSystemHeight) * 0.96)
+      );
+      if (fittedPercent < currentZoomPercent) {
+        scoreZoomSlider.value = String(fittedPercent);
+        scoreZoomVal.textContent = String(fittedPercent);
+        requestAnimationFrame(() => rerenderScoreLayout({ autoFit: true }));
+        return true;
+      }
+    }
+    const targetHeight = Math.min(maxViewportHeight, Math.max(300, maxSystemHeight + 72));
+    wrap.style.height = Math.round(targetHeight) + "px";
+    return false;
   }
 
   // 把解析出的音符排进 Tone.Transport
@@ -281,9 +478,10 @@
     Piano.clearAll();
     if (osmd && osmd.cursor) {
       osmd.cursor.reset(); // 光标回到开头
+      osmd.cursor.show();
       cursorIndex = 0;
       resetCursorScroll();
-      document.querySelector(".score-wrap").scrollTop = 0;
+      scrollCursorIntoView();
     }
     cancelAnimationFrame(rafId);
     playBtn.disabled = parsed ? false : true;
@@ -303,25 +501,32 @@
     timeLabel.textContent = `${fmtTime(elapsed)} / ${fmtTime(total)}`;
   }
 
-  // 让当前行落在视窗第二行:把"上一行"对齐到视窗顶部,当前行自然下移一行。
-  // 这样当前行上方有刚弹过的一行作参照,也不会被顶部边缘遮挡和弦/标记。
+  function currentSystemForTop(top) {
+    if (!scoreSystems.length) return null;
+    return scoreSystems.reduce((best, system) => {
+      if (!best) return system;
+      return Math.abs(system.top - top) < Math.abs(best.top - top) ? system : best;
+    }, null);
+  }
+
+  // 让当前演奏系统完整进入视窗。双手谱的一个系统包含上下两行五线谱。
   function scrollCursorIntoView() {
     const wrap = document.querySelector(".score-wrap");
     const img = osmd.cursor && osmd.cursor.cursorElement;
     if (!wrap || !img) return;
     const top = parseFloat(img.style.top) || 0;
     if (top !== curLineTop) {
-      // 换行了:记录上一行位置(首行时没有上一行,就用自身)
-      prevLineTop = curLineTop == null ? top : curLineTop;
+      // 换系统了:记录当前位置,避免同一系统内重复平滑滚动
       curLineTop = top;
     }
-    wrap.scrollTop = Math.max(0, prevLineTop - 28); // 上一行贴顶(留出和弦行),当前行成为第二行
+    const system = currentSystemForTop(top);
+    const targetTop = system ? system.top : top;
+    wrap.scrollTop = Math.max(0, targetTop - 36);
   }
 
   // 重置行跟踪状态(加载/重新播放/停止时调用)
   function resetCursorScroll() {
     curLineTop = null;
-    prevLineTop = 0;
   }
 
   // 根据当前播放时间,把五线谱光标推进到正确位置(自校正:tab 切回也能对上)
@@ -370,6 +575,17 @@
     }
   });
 
+  scoreZoomSlider.addEventListener("input", () => {
+    rerenderScoreLayout({ autoFit: false });
+  });
+
+  let resizeTimer = null;
+  window.addEventListener("resize", () => {
+    if (!parsed) return;
+    clearTimeout(resizeTimer);
+    resizeTimer = setTimeout(() => rerenderScoreLayout({ autoFit: true }), 180);
+  });
+
   $("labelToggle").addEventListener("change", (e) => {
     Piano.setShowLabels(e.target.checked);
   });
@@ -377,18 +593,25 @@
   $("osmdContainer").addEventListener("click", onScoreClick);
 
   $("loadSampleBtn").addEventListener("click", async () => {
-    const url = $("sampleSelect").value;
+    const source = selectedScoreSource();
+    if (!source) {
+      setStatus("请先选择一个乐谱。", true);
+      return;
+    }
     try {
-      setStatus("正在加载样例…");
-      const res = await fetch(url);
-      if (!res.ok) throw new Error("HTTP " + res.status);
-      const text = await res.text();
-      const label = $("sampleSelect").selectedOptions[0].textContent;
-      await loadMusicXML(text, label);
+      setStatus("正在加载乐谱…");
+      const text = await fetchScoreText(source);
+      await loadMusicXML(text, source.label);
     } catch (e) {
-      setStatus("加载样例失败:" + e.message, true);
+      setStatus("加载乐谱失败:" + e.message, true);
     }
   });
+
+  seriesSelect.addEventListener("change", () => {
+    scoreSearch.value = "";
+    renderSampleOptions();
+  });
+  scoreSearch.addEventListener("input", renderSampleOptions);
 
   // .mxl 是 ZIP:解压并取出真正的 MusicXML 文本
   function decodeMxl(arrayBuffer) {
@@ -446,8 +669,10 @@
   );
 
   // 启动
+  renderSampleOptions();
+  loadLibrarySeries();
   initOSMD();
   Piano.build("piano");
   initSampler(); // 提前加载音色,使自由演奏开箱即用
-  setStatus("已就绪。可直接用鼠标点击键盘弹奏,或「加载样例」试听经典曲目。");
+  setStatus("已就绪。先选择系列和乐谱,也可直接用鼠标点击键盘弹奏。");
 })();

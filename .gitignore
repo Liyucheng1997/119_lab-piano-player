@@ -1,5 +1,6 @@
 # 依赖(本项目零依赖,保留以防未来引入)
 node_modules/
+__pycache__/
 
 # Audiveris 识别产生的临时文件(后端接入后使用)
 server/uploads/
