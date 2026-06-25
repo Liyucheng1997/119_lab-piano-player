@@ -8,6 +8,8 @@
   <!-- 第三方库走 CDN -->
   <script src="https://cdn.jsdelivr.net/npm/tone@14.8.49/build/Tone.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/opensheetmusicdisplay@1.8.7/build/opensheetmusicdisplay.min.js"></script>
+  <!-- .mxl 解压(ZIP)-->
+  <script src="https://cdn.jsdelivr.net/npm/fflate@0.8.2/umd/index.js"></script>
 </head>
 <body>
   <header>
@@ -38,6 +40,10 @@
     <label class="tempo">
       速度 <span id="tempoVal">100</span>%
       <input type="range" id="tempoSlider" min="40" max="160" value="100" />
+    </label>
+
+    <label class="toggle">
+      <input type="checkbox" id="labelToggle" checked /> 按键音名提示
     </label>
   </section>
 

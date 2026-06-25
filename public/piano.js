@@ -12,6 +12,8 @@ const Piano = (function () {
   let onDownCb = null; // 自由演奏:按下回调
   let onUpCb = null; // 自由演奏:松开回调
   let activePointerMidi = null; // 当前鼠标/触摸按住的键
+  let showLabels = true; // 是否显示敲击音名提示
+  let containerEl = null; // #piano 容器,漂浮提示挂在这里
 
   function isBlack(midi) {
     return BLACK_OFFSETS[((midi % 12) + 12) % 12] === true;
@@ -25,6 +27,7 @@ const Piano = (function () {
   // 统计范围内的白键数,白键等宽布局,黑键叠在相邻白键之间
   function build(containerId, range) {
     const container = document.getElementById(containerId);
+    containerEl = container;
     container.innerHTML = "";
     if (range) {
       lowMidi = range.low;
@@ -96,6 +99,7 @@ const Piano = (function () {
       release();
       activePointerMidi = midi;
       highlight(midi, true);
+      flashLabel(midi);
       if (onDownCb) onDownCb(midi);
     };
     const release = () => {
@@ -125,6 +129,26 @@ const Piano = (function () {
     onUpCb = onUp;
   }
 
+  // 开关敲击音名提示
+  function setShowLabels(v) {
+    showLabels = !!v;
+  }
+
+  // 在某个键上方弹出音名(如 E2),向上飘并淡出
+  function flashLabel(midi) {
+    if (!showLabels || !containerEl) return;
+    const el = keyEls[midi];
+    if (!el) return;
+    const label = document.createElement("div");
+    label.className = "key-flash";
+    label.textContent = noteName(midi);
+    label.style.left = el.offsetLeft + el.offsetWidth / 2 + "px";
+    containerEl.appendChild(label);
+    // 下一帧加 .rise 触发上飘+淡出动画,结束后移除
+    requestAnimationFrame(() => label.classList.add("rise"));
+    setTimeout(() => label.remove(), 900);
+  }
+
   function highlight(midi, on) {
     const el = keyEls[midi];
     if (el) el.classList.toggle("active", on);
@@ -147,5 +171,5 @@ const Piano = (function () {
     return { low: lo, high: hi };
   }
 
-  return { build, highlight, clearAll, noteName, ensureRange, isBlack, setInteractive };
+  return { build, highlight, clearAll, noteName, ensureRange, isBlack, setInteractive, setShowLabels, flashLabel };
 })();
