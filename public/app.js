@@ -16,6 +16,9 @@
   const scoreSearch = $("scoreSearch");
   const sampleSelect = $("sampleSelect");
   const libraryCount = $("libraryCount");
+  const fullScoreBtn = $("fullScoreBtn");
+
+  const PREVIEW_MEASURE_LIMIT = 48;
 
   let osmd = null;
   let sampler = null;
@@ -30,6 +33,42 @@
   let scoreSystems = []; // 每个乐谱系统的位置 {top, bottom, height}
   let cursorIndex = 0; // 当前光标已推进到第几步
   let curLineTop = null; // 当前系统的纵向位置
+  let currentScore = null; // { fullXmlText, parsed, label, isPreview }
+  let loadSequence = 0;
+  let workerRequestId = 0;
+  const pendingWorkerRequests = new Map();
+  let musicWorker = null;
+
+  function ensureMusicWorker() {
+    if (musicWorker) return musicWorker;
+    musicWorker = new Worker("musicxml-worker.js");
+    musicWorker.onmessage = ({ data }) => {
+      const request = pendingWorkerRequests.get(data.id);
+      if (!request) return;
+      pendingWorkerRequests.delete(data.id);
+      if (data.ok) request.resolve(data);
+      else request.reject(new Error(data.error));
+    };
+    musicWorker.onerror = (event) => {
+      const error = new Error(event.message || "后台乐谱解析器启动失败");
+      pendingWorkerRequests.forEach(({ reject }) => reject(error));
+      pendingWorkerRequests.clear();
+      musicWorker.terminate();
+      musicWorker = null;
+    };
+    return musicWorker;
+  }
+
+  function prepareMusicXML(payload) {
+    const id = ++workerRequestId;
+    return new Promise((resolve, reject) => {
+      pendingWorkerRequests.set(id, { resolve, reject });
+      const message = { id, previewMeasureLimit: PREVIEW_MEASURE_LIMIT, ...payload };
+      const worker = ensureMusicWorker();
+      if (payload.mxlBuffer) worker.postMessage(message, [payload.mxlBuffer]);
+      else worker.postMessage(message);
+    });
+  }
 
   const builtinSamples = [
     { title: "小星星 Twinkle", url: "samples/twinkle.musicxml", type: "musicxml" },
@@ -187,14 +226,14 @@
     };
   }
 
-  async function fetchScoreText(source) {
+  async function fetchScorePayload(source) {
     const res = await fetch(source.url);
     if (!res.ok) throw new Error("HTTP " + res.status);
     const isMxl = source.type === "mxl" || /\.(mxl|mxl_)($|[?#])/i.test(source.url);
     if (isMxl) {
-      return decodeMxl(await res.arrayBuffer());
+      return { mxlBuffer: await res.arrayBuffer() };
     }
-    return res.text();
+    return { xmlText: await res.text() };
   }
 
   // 初始化 OSMD
@@ -233,24 +272,25 @@
     }).toDestination();
   }
 
-  // 加载并渲染一个 MusicXML 文本
-  async function loadMusicXML(xmlText, label) {
+  function yieldToBrowser() {
+    return new Promise((resolve) => requestAnimationFrame(() => setTimeout(resolve, 0)));
+  }
+
+  // 渲染已在 Worker 中解析过的 MusicXML。大谱默认只排版前 48 小节，避免 SVG 节点爆炸。
+  async function loadMusicXML(score) {
     stopPlayback();
     try {
-      setStatus("正在渲染乐谱…");
-      await osmd.load(xmlText);
+      setStatus(score.isPreview ? "正在渲染乐谱预览…" : "正在渲染乐谱…");
+      await yieldToBrowser();
+      await osmd.load(score.renderedXmlText);
       applyScoreZoom();
       osmd.render();
     } catch (e) {
       setStatus("乐谱渲染失败:" + e.message, true);
       return;
     }
-    try {
-      parsed = MusicXMLParser.parse(xmlText);
-    } catch (e) {
-      setStatus("音符解析失败:" + e.message, true);
-      return;
-    }
+    parsed = score.parsed;
+    currentScore = score;
     if (!parsed.notes.length) {
       setStatus("没有解析到任何音符。", true);
       return;
@@ -267,9 +307,34 @@
     pauseBtn.disabled = true;
     stopBtn.disabled = false;
     updateProgress(0);
+    fullScoreBtn.hidden = !score.isPreview;
+    fullScoreBtn.disabled = false;
+    const previewHint = score.isPreview
+      ? `为保持流畅，当前仅显示前 ${PREVIEW_MEASURE_LIMIT}/${score.measureCount} 小节；可按「渲染完整乐谱」。`
+      : "";
     setStatus(
-      `已加载「${label}」:${parsed.notes.length} 个音符,时长约 ${fmtTime(parsed.totalDuration)},原速 ${Math.round(parsed.tempo)} BPM。点击乐谱上任一音符可从该处开始演奏。`
+      `已加载「${score.label}」:${parsed.notes.length} 个音符,时长约 ${fmtTime(parsed.totalDuration)},原速 ${Math.round(parsed.tempo)} BPM。${previewHint}`
     );
+  }
+
+  async function renderFullScore() {
+    if (!currentScore || !currentScore.isPreview) return;
+    fullScoreBtn.disabled = true;
+    stopPlayback();
+    try {
+      setStatus("正在渲染完整乐谱…");
+      await yieldToBrowser();
+      await osmd.load(currentScore.fullXmlText);
+      applyScoreZoom();
+      osmd.render();
+      currentScore = { ...currentScore, isPreview: false, renderedXmlText: currentScore.fullXmlText };
+      buildCursorTimeline({ autoFit: true });
+      fullScoreBtn.hidden = true;
+      setStatus(`已显示完整乐谱（${currentScore.measureCount} 小节）。`);
+    } catch (e) {
+      fullScoreBtn.disabled = false;
+      setStatus("完整乐谱渲染失败:" + e.message, true);
+    }
   }
 
   // 预扫描 OSMD 光标,记录每一步的音乐时间(秒,原速)。
@@ -598,14 +663,20 @@
       setStatus("请先选择一个乐谱。", true);
       return;
     }
+    const sequence = ++loadSequence;
+    fullScoreBtn.hidden = true;
     try {
-      setStatus("正在加载乐谱…");
-      const text = await fetchScoreText(source);
-      await loadMusicXML(text, source.label);
+      setStatus("正在后台解析乐谱…");
+      const payload = await fetchScorePayload(source);
+      const score = await prepareMusicXML(payload);
+      if (sequence !== loadSequence) return;
+      await loadMusicXML({ ...score, label: source.label, renderedXmlText: score.xmlText });
     } catch (e) {
-      setStatus("加载乐谱失败:" + e.message, true);
+      if (sequence === loadSequence) setStatus("加载乐谱失败:" + e.message, true);
     }
   });
+
+  fullScoreBtn.addEventListener("click", renderFullScore);
 
   seriesSelect.addEventListener("change", () => {
     scoreSearch.value = "";
@@ -613,47 +684,24 @@
   });
   scoreSearch.addEventListener("input", renderSampleOptions);
 
-  // .mxl 是 ZIP:解压并取出真正的 MusicXML 文本
-  function decodeMxl(arrayBuffer) {
-    if (typeof fflate === "undefined") {
-      throw new Error("解压库未加载,无法读取 .mxl");
-    }
-    const files = fflate.unzipSync(new Uint8Array(arrayBuffer));
-    const decoder = new TextDecoder("utf-8");
-
-    // 优先按 META-INF/container.xml 里指定的 rootfile 定位
-    let target = null;
-    if (files["META-INF/container.xml"]) {
-      const containerXml = decoder.decode(files["META-INF/container.xml"]);
-      const doc = new DOMParser().parseFromString(containerXml, "application/xml");
-      const rootfile = doc.getElementsByTagName("rootfile")[0];
-      const fullPath = rootfile && rootfile.getAttribute("full-path");
-      if (fullPath && files[fullPath]) target = fullPath;
-    }
-    // 兜底:找第一个非 META-INF 的 .xml/.musicxml
-    if (!target) {
-      target = Object.keys(files).find(
-        (n) => !n.startsWith("META-INF/") && /\.(musicxml|xml)$/i.test(n)
-      );
-    }
-    if (!target) throw new Error(".mxl 内未找到 MusicXML 文件");
-    return decoder.decode(files[target]);
-  }
-
   $("fileInput").addEventListener("change", async (ev) => {
     const file = ev.target.files[0];
     if (!file) return;
+    const sequence = ++loadSequence;
+    fullScoreBtn.hidden = true;
     try {
-      let text;
+      setStatus("正在后台解析乐谱…");
+      let payload;
       if (file.name.toLowerCase().endsWith(".mxl")) {
-        setStatus("正在解压 .mxl …");
-        text = decodeMxl(await file.arrayBuffer());
+        payload = { mxlBuffer: await file.arrayBuffer() };
       } else {
-        text = await file.text();
+        payload = { xmlText: await file.text() };
       }
-      await loadMusicXML(text, file.name);
+      const score = await prepareMusicXML(payload);
+      if (sequence !== loadSequence) return;
+      await loadMusicXML({ ...score, label: file.name, renderedXmlText: score.xmlText });
     } catch (e) {
-      setStatus("读取文件失败:" + e.message, true);
+      if (sequence === loadSequence) setStatus("读取文件失败:" + e.message, true);
     }
   });
 
