@@ -6,6 +6,9 @@ __pycache__/
 server/uploads/
 *.mxl.tmp
 
+# 吉他谱 AI 识别缓存
+data/guitar-ocr-cache/
+
 # 操作系统
 .DS_Store
 Thumbs.db

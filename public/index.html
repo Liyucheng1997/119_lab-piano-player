@@ -3,70 +3,29 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>钢琴演奏 · MusicXML 播放器</title>
+  <title>乐器演奏 · 乐谱播放器</title>
   <link rel="stylesheet" href="style.css" />
-  <!-- 第三方库走 CDN -->
-  <script src="https://cdn.jsdelivr.net/npm/tone@14.8.49/build/Tone.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/opensheetmusicdisplay@1.8.7/build/opensheetmusicdisplay.min.js"></script>
 </head>
-<body>
-  <header>
-    <h1>🎹 钢琴演奏 · 乐谱播放器</h1>
-    <p class="subtitle">自动演奏经典曲目 + 实时按键高亮,也可用鼠标点击键盘自由弹奏(Audiveris 图片识别后续接入)</p>
+<body class="landing">
+  <header class="landing-header">
+    <h1>🎵 乐器演奏 · 乐谱播放器</h1>
+    <p class="subtitle">选择一种乐器开始:加载乐谱,自动演奏,实时跟随。</p>
   </header>
 
-  <section class="controls">
-    <label class="file-label">
-      上传 MusicXML
-      <input type="file" id="fileInput" accept=".xml,.musicxml,.mxl" />
-    </label>
-    <select id="seriesSelect" class="series-select"></select>
-    <input type="search" id="scoreSearch" class="score-search" placeholder="搜索谱库" autocomplete="off" />
-    <select id="sampleSelect"></select>
-    <button id="loadSampleBtn">加载乐谱</button>
-    <button id="fullScoreBtn" hidden>渲染完整乐谱</button>
-    <span class="library-count" id="libraryCount"></span>
+  <main class="instrument-grid">
+    <a class="instrument-card" href="piano.html">
+      <span class="instrument-icon">🎹</span>
+      <span class="instrument-name">钢琴</span>
+      <span class="instrument-desc">MusicXML / MXL 乐谱 · 五线谱跟随 · 键盘高亮,可用鼠标自由弹奏</span>
+      <span class="instrument-cta">进入钢琴 →</span>
+    </a>
 
-    <span class="divider"></span>
-
-    <button id="playBtn" disabled>▶ 演奏</button>
-    <button id="pauseBtn" disabled>⏸ 暂停</button>
-    <button id="stopBtn" disabled>⏹ 停止</button>
-
-    <label class="tempo">
-      速度 <span id="tempoVal">100</span>%
-      <input type="range" id="tempoSlider" min="40" max="160" value="100" />
-    </label>
-
-    <label class="tempo score-zoom">
-      谱面 <span id="scoreZoomVal">90</span>%
-      <input type="range" id="scoreZoomSlider" min="45" max="120" value="90" />
-    </label>
-
-    <label class="toggle">
-      <input type="checkbox" id="labelToggle" checked /> 按键音名提示
-    </label>
-  </section>
-
-  <section class="progress-wrap">
-    <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
-    <span class="time" id="timeLabel">0:00 / 0:00</span>
-  </section>
-
-  <section class="status" id="status">请加载一个乐谱开始。</section>
-
-  <!-- 钢琴键盘 -->
-  <section class="piano-wrap">
-    <div id="piano"></div>
-  </section>
-
-  <!-- 乐谱渲染区 -->
-  <section class="score-wrap">
-    <div id="osmdContainer"></div>
-  </section>
-
-  <script src="musicxml-parser.js"></script>
-  <script src="piano.js"></script>
-  <script src="app.js"></script>
+    <a class="instrument-card" href="guitar.html">
+      <span class="instrument-icon">🎸</span>
+      <span class="instrument-name">吉他</span>
+      <span class="instrument-desc">Guitar Pro 吉他谱(gp / gp5 / gpx 等)· 六线谱渲染 · 内置合成器演奏</span>
+      <span class="instrument-cta">进入吉他 →</span>
+    </a>
+  </main>
 </body>
 </html>

@@ -26,6 +26,90 @@ body {
 header h1 { margin: 0 0 4px; font-size: 22px; }
 .subtitle { margin: 0 0 16px; color: var(--muted); font-size: 13px; }
 
+.header-row { display: flex; align-items: baseline; gap: 14px; flex-wrap: wrap; }
+.back-link {
+  color: var(--muted);
+  font-size: 13px;
+  text-decoration: none;
+  white-space: nowrap;
+}
+.back-link:hover { color: var(--accent); }
+
+/* ---------- 首页:乐器选择 ---------- */
+.landing-header { text-align: center; margin-top: 8vh; }
+.landing-header h1 { font-size: 28px; }
+.landing .subtitle { font-size: 14px; }
+
+.instrument-grid {
+  display: flex;
+  justify-content: center;
+  gap: 24px;
+  flex-wrap: wrap;
+  margin-top: 36px;
+}
+.instrument-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  width: 300px;
+  padding: 34px 26px 28px;
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  text-decoration: none;
+  color: var(--text);
+  transition: transform 0.15s, border-color 0.15s, box-shadow 0.15s;
+}
+.instrument-card:hover {
+  transform: translateY(-4px);
+  border-color: var(--accent);
+  box-shadow: 0 10px 28px rgba(0, 0, 0, 0.35);
+}
+.instrument-icon { font-size: 56px; line-height: 1; }
+.instrument-name { font-size: 22px; font-weight: 600; }
+.instrument-desc {
+  font-size: 13px;
+  color: var(--muted);
+  text-align: center;
+  line-height: 1.6;
+  min-height: 60px;
+}
+.instrument-cta {
+  margin-top: 6px;
+  padding: 8px 22px;
+  border-radius: 8px;
+  background: var(--accent);
+  color: #fff;
+  font-size: 14px;
+}
+.instrument-card:hover .instrument-cta { background: #3f7af0; }
+
+/* 图片识谱按钮:用强调色区分 */
+.file-label-ai {
+  border-color: var(--accent-2) !important;
+  color: var(--accent-2) !important;
+}
+.file-label-ai:hover { background: rgba(54, 201, 141, 0.12) !important; }
+
+/* ---------- 吉他谱渲染区(alphaTab) ---------- */
+.tab-wrap {
+  background: #fff;
+  border-radius: 10px;
+  margin-top: 16px;
+  padding: 10px;
+  height: 480px;
+  overflow-y: auto;
+  overflow-x: hidden;
+  position: relative; /* alphaTab 播放光标需要定位上下文 */
+}
+#alphaTab { min-height: 120px; }
+/* alphaTab 播放光标配色 */
+.at-cursor-bar { background: rgba(79, 140, 255, 0.18); }
+.at-cursor-beat { background: rgba(79, 140, 255, 0.85); width: 3px; }
+.at-selection div { background: rgba(54, 201, 141, 0.15); }
+.at-highlight * { fill: #4f8cff; stroke: #4f8cff; }
+
 .controls {
   display: flex;
   align-items: center;

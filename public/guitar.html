@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>吉他演奏 · Guitar Pro 播放器</title>
+  <link rel="stylesheet" href="style.css" />
+  <!-- alphaTab:浏览器端 Guitar Pro 谱渲染 + 合成器播放 -->
+  <script src="https://cdn.jsdelivr.net/npm/@coderline/alphatab@1.8.4/dist/alphaTab.min.js"></script>
+</head>
+<body>
+  <header>
+    <div class="header-row">
+      <a class="back-link" href="index.html">← 返回选择乐器</a>
+      <h1>🎸 吉他演奏 · 吉他谱播放器</h1>
+    </div>
+    <p class="subtitle">加载 Guitar Pro 吉他谱(.gp3 / .gp4 / .gp5 / .gpx / .gp),或上传吉他谱照片由 AI 识谱;渲染六线谱并自动演奏,光标实时跟随。多页谱请一次选中全部图片(按文件名 1、2 排序)。</p>
+  </header>
+
+  <section class="controls">
+    <label class="file-label">
+      上传吉他谱
+      <input type="file" id="fileInput" accept=".gp,.gp3,.gp4,.gp5,.gpx,.gp7,.xml,.musicxml,.mxl,.capx" />
+    </label>
+    <label class="file-label file-label-ai">
+      📷 图片识谱(AI)
+      <input type="file" id="imageInput" accept="image/*" multiple />
+    </label>
+    <button id="downloadGpBtn" disabled title="把当前乐谱导出为 Guitar Pro 文件">下载 .gp</button>
+    <select id="sampleSelect"></select>
+    <button id="loadSampleBtn">加载示例</button>
+
+    <span class="divider"></span>
+
+    <button id="playBtn" disabled>▶ 演奏</button>
+    <button id="stopBtn" disabled>⏹ 停止</button>
+
+    <label class="tempo">
+      速度 <span id="tempoVal">100</span>%
+      <input type="range" id="tempoSlider" min="40" max="160" value="100" />
+    </label>
+
+    <select id="trackSelect" title="选择要显示的音轨" hidden></select>
+
+    <label class="toggle">
+      <input type="checkbox" id="metronomeToggle" /> 节拍器
+    </label>
+    <label class="toggle">
+      <input type="checkbox" id="countInToggle" /> 前置数拍
+    </label>
+    <label class="toggle">
+      <input type="checkbox" id="loopToggle" /> 循环
+    </label>
+  </section>
+
+  <section class="progress-wrap">
+    <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+    <span class="time" id="timeLabel">0:00 / 0:00</span>
+  </section>
+
+  <section class="status" id="status">请上传一份 Guitar Pro 吉他谱,或加载示例开始。</section>
+
+  <!-- 吉他谱渲染区(alphaTab) -->
+  <section class="tab-wrap" id="tabWrap">
+    <div id="alphaTab"></div>
+  </section>
+
+  <script src="guitar.js"></script>
+</body>
+</html>
