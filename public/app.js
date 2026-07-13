@@ -71,6 +71,8 @@
   }
 
   const builtinSamples = [
+    { title: "阳光快板 Mozartian Sunlit Allegro", url: "samples/mozartian-sunlit-allegro.musicxml", type: "musicxml" },
+    { title: "晴朗小步 Sunny Steps", url: "samples/sunny-steps.musicxml", type: "musicxml" },
     { title: "小星星 Twinkle", url: "samples/twinkle.musicxml", type: "musicxml" },
     { title: "欢乐颂 Ode to Joy", url: "samples/ode-to-joy.musicxml", type: "musicxml" },
     { title: "致爱丽丝 Fur Elise", url: "samples/fur-elise.musicxml", type: "musicxml" },
