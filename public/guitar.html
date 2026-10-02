@@ -3,68 +3,131 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>吉他演奏 · Guitar Pro 播放器</title>
+  <title>金色大厅 · 古典吉他</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500;1,600&family=Noto+Serif+SC:wght@400;600&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="style.css" />
-  <!-- alphaTab:浏览器端 Guitar Pro 谱渲染 + 合成器播放 -->
+  <link rel="stylesheet" href="concert.css" />
+  <script src="https://cdn.jsdelivr.net/npm/tone@14.8.49/build/Tone.js"></script>
+  <!-- alphaTab:六线谱渲染 + 光标(声音由下方的真实吉他采样引擎负责) -->
   <script src="https://cdn.jsdelivr.net/npm/@coderline/alphatab@1.8.4/dist/alphaTab.min.js"></script>
+  <script type="importmap">
+    {
+      "imports": {
+        "three": "https://cdn.jsdelivr.net/npm/three@0.169.0/build/three.module.js",
+        "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.169.0/examples/jsm/"
+      }
+    }
+  </script>
 </head>
-<body>
-  <header>
-    <div class="header-row">
-      <a class="back-link" href="index.html">← 返回选择乐器</a>
-      <h1>🎸 吉他演奏 · 吉他谱播放器</h1>
+<body class="concert guitar-page">
+  <header class="hall-bar">
+    <a class="back-link" href="index.html">← 乐器选择</a>
+    <div class="hall-title">
+      <span class="crest">❦</span>
+      <span class="hall-name">金色大厅</span>
+      <span class="hall-sub">Guitarra Clásica · Recital</span>
     </div>
-    <p class="subtitle">加载 Guitar Pro 吉他谱(.gp3 / .gp4 / .gp5 / .gpx / .gp),或上传吉他谱照片由 AI 识谱;渲染六线谱并自动演奏,光标实时跟随。多页谱请一次选中全部图片(按文件名 1、2 排序)。</p>
+    <div class="bar-actions">
+      <button id="openShelfBtn" class="gold-btn">📜 琴谱柜</button>
+      <label class="file-label ghost-btn" title="Guitar Pro(gp3/gp4/gp5/gpx/gp)或 MusicXML">
+        上传吉他谱
+        <input type="file" id="fileInput" accept=".gp,.gp3,.gp4,.gp5,.gpx,.gp7,.xml,.musicxml,.mxl,.capx" />
+      </label>
+      <label class="file-label ghost-btn" id="aiLabel" hidden title="需要本地 node server.js + Claude CLI">
+        📷 图片识谱
+        <input type="file" id="imageInput" accept="image/*" multiple />
+      </label>
+    </div>
   </header>
 
-  <section class="controls">
-    <label class="file-label">
-      上传吉他谱
-      <input type="file" id="fileInput" accept=".gp,.gp3,.gp4,.gp5,.gpx,.gp7,.xml,.musicxml,.mxl,.capx" />
-    </label>
-    <label class="file-label file-label-ai">
-      📷 图片识谱(AI)
-      <input type="file" id="imageInput" accept="image/*" multiple />
-    </label>
-    <button id="downloadGpBtn" disabled title="把当前乐谱导出为 Guitar Pro 文件">下载 .gp</button>
-    <select id="sampleSelect"></select>
-    <button id="loadSampleBtn">加载示例</button>
+  <section class="stage" id="stage3d">
+    <div class="stage-loading">
+      <div class="loading-crest">❦</div>
+      <div>正在布置金色大厅…</div>
+    </div>
 
-    <span class="divider"></span>
+    <div class="now-playing">
+      <div class="np-kicker">Heute Abend · 今晚曲目</div>
+      <div class="np-title" id="npTitle">尚未选曲</div>
+      <div class="np-sub" id="npSub">打开「琴谱柜」,挑一首古典吉他名曲</div>
+    </div>
 
-    <button id="playBtn" disabled>▶ 演奏</button>
-    <button id="stopBtn" disabled>⏹ 停止</button>
+    <div class="camera-dock" id="cameraDock"></div>
 
-    <label class="tempo">
-      速度 <span id="tempoVal">100</span>%
-      <input type="range" id="tempoSlider" min="40" max="160" value="100" />
-    </label>
-
-    <select id="trackSelect" title="选择要显示的音轨" hidden></select>
-
-    <label class="toggle">
-      <input type="checkbox" id="metronomeToggle" /> 节拍器
-    </label>
-    <label class="toggle">
-      <input type="checkbox" id="countInToggle" /> 前置数拍
-    </label>
-    <label class="toggle">
-      <input type="checkbox" id="loopToggle" /> 循环
-    </label>
+    <div class="transport">
+      <div class="transport-buttons">
+        <button id="playBtn" class="round-btn play" disabled title="演奏">▶</button>
+        <button id="pauseBtn" class="round-btn" disabled title="暂停">❚❚</button>
+        <button id="stopBtn" class="round-btn" disabled title="停止">■</button>
+      </div>
+      <div class="transport-progress">
+        <div class="progress-bar" id="progressBar"><div class="progress-fill" id="progressFill"></div></div>
+        <span class="time" id="timeLabel">0:00 / 0:00</span>
+      </div>
+      <label class="tempo">
+        速度 <span id="tempoVal">100</span>%
+        <input type="range" id="tempoSlider" min="40" max="150" value="100" />
+      </label>
+    </div>
   </section>
 
-  <section class="progress-wrap">
-    <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
-    <span class="time" id="timeLabel">0:00 / 0:00</span>
+  <section class="hall-toolbar">
+    <div class="status" id="status">正在准备…</div>
+    <div class="toolbar-toggles">
+      <select id="voiceSelect" class="voice-select" title="音色">
+        <option value="nylon">尼龙弦 · 古典吉他</option>
+        <option value="steel">钢弦 · 民谣吉他</option>
+      </select>
+      <label class="toggle"><input type="checkbox" id="labelToggle" checked /> 音名提示</label>
+      <label class="toggle"><input type="checkbox" id="glowToggle" checked /> 弦光指位</label>
+      <label class="toggle"><input type="checkbox" id="reverbToggle" checked /> 大厅混响</label>
+      <label class="toggle"><input type="checkbox" id="loopToggle" /> 循环</label>
+      <label class="toggle"><input type="checkbox" id="orbitToggle" /> 镜头漫游</label>
+    </div>
   </section>
 
-  <section class="status" id="status">请上传一份 Guitar Pro 吉他谱,或加载示例开始。</section>
+  <section class="chord-pad">
+    <span class="chord-pad-label">自由弹奏 · 和弦</span>
+    <div class="chord-buttons" id="chordButtons"></div>
+    <button class="ghost-btn" id="strumDownBtn" title="空格">↓ 扫弦</button>
+    <button class="ghost-btn" id="strumUpBtn" title="J">↑ 回扫</button>
+  </section>
+  <p class="keyboard-hint">
+    点击 3D 琴弦即可拨弦(指板上点哪一品就弹哪一品,在音孔附近拨则按当前和弦),按住拖过琴弦就是扫弦。
+    电脑键盘:<kbd>1</kbd>~<kbd>9</kbd> 选和弦、<kbd>A</kbd><kbd>S</kbd><kbd>D</kbd><kbd>F</kbd><kbd>G</kbd><kbd>H</kbd> 依次拨六弦→一弦、<kbd>空格</kbd> 扫弦、<kbd>J</kbd> 回扫。
+  </p>
 
-  <!-- 吉他谱渲染区(alphaTab) -->
-  <section class="tab-wrap" id="tabWrap">
-    <div id="alphaTab"></div>
+  <section class="sheet-desk">
+    <div class="sheet-desk-head">
+      <span class="sheet-desk-title">六线谱 · Tablatura</span>
+      <select id="trackSelect" class="voice-select" title="选择要显示的音轨" hidden></select>
+      <button id="downloadGpBtn" class="ghost-btn" disabled title="把当前乐谱导出为 Guitar Pro 文件">下载 .gp</button>
+    </div>
+    <div class="tab-wrap paper-sheet" id="tabWrap">
+      <div id="alphaTab"></div>
+    </div>
   </section>
 
-  <script src="guitar.js"></script>
+  <div class="shelf-backdrop" id="shelfBackdrop"></div>
+  <aside class="shelf" id="shelf" aria-hidden="true">
+    <div class="shelf-head">
+      <div>
+        <div class="shelf-title">琴谱柜 · Repertorio</div>
+        <div class="shelf-count" id="libraryCount"></div>
+      </div>
+      <button class="shelf-close" id="closeShelfBtn" title="关闭">✕</button>
+    </div>
+    <div class="shelf-filters">
+      <div class="series-tabs" id="levelTabs"></div>
+      <input type="search" id="scoreSearch" class="shelf-search" placeholder="搜索曲名、作曲家…" autocomplete="off" />
+    </div>
+    <div class="shelf-grid" id="shelfGrid"></div>
+    <p class="shelf-credit">曲谱来自 <a href="https://www.mutopiaproject.org/" target="_blank" rel="noopener">Mutopia Project</a>(公有领域 / CC 授权),由本站自动编配为六线谱;吉他采样来自 tonejs-instruments(CC BY 3.0)。</p>
+  </aside>
+
+  <script type="module" src="guitar3d/main.js"></script>
+  <script type="module" src="guitar.js"></script>
 </body>
 </html>

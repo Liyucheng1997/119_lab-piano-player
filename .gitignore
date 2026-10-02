@@ -9,6 +9,9 @@ server/uploads/
 # 吉他谱 AI 识别缓存
 data/guitar-ocr-cache/
 
+# 吉他曲库构建时下载的 Mutopia 源文件(tools/build_guitar_library.js 会自动下载)
+data/guitar-sources/
+
 # 操作系统
 .DS_Store
 Thumbs.db

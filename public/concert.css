@@ -506,6 +506,11 @@ body.shelf-open .shelf-backdrop { opacity: 1; pointer-events: auto; }
 
 @media (max-width: 720px) {
   .hall-sub { display: none; }
+  .hall-name { white-space: nowrap; font-size: 17px; letter-spacing: 0.1em; }
+  .hall-title { flex: 1 1 auto; min-width: 0; overflow: hidden; }
+  .bar-actions { gap: 6px; }
+  .bar-actions .gold-btn, .bar-actions .ghost-btn, .hall-bar .file-label { padding: 6px 11px; font-size: 13px; }
+  #aiLabel { display: none; }
   .hall-bar { padding: 10px 14px; gap: 10px; }
   .hall-bar .back-link { display: none; }
   .np-title { font-size: 21px; }
@@ -535,4 +540,77 @@ body.shelf-open .shelf-backdrop { opacity: 1; pointer-events: auto; }
   font-family: var(--serif-cn);
   font-size: 15px;
   color: #6b5233;
+}
+
+/* ============ 吉他页 ============ */
+.voice-select {
+  font-family: var(--serif-cn);
+  font-size: 13px;
+  padding: 5px 10px;
+  border-radius: 999px;
+  border: 1px solid var(--hall-line);
+  background: rgba(255, 230, 180, 0.05);
+  color: var(--ink);
+}
+.voice-select option { background: #24150b; color: var(--ink); }
+
+.chord-pad {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+  padding: 12px 22px 0;
+}
+.chord-pad-label { font-family: var(--serif); font-style: italic; color: var(--gold); font-size: 15px; margin-right: 4px; }
+.chord-buttons { display: flex; gap: 6px; flex-wrap: wrap; }
+.chord-buttons button {
+  min-width: 44px;
+  font-family: var(--serif);
+  font-size: 15px;
+  font-weight: 600;
+  padding: 5px 10px;
+  border-radius: 8px;
+  border: 1px solid var(--hall-line);
+  background: rgba(255, 230, 180, 0.05);
+  color: var(--ink);
+  cursor: pointer;
+  transition: all 0.12s;
+}
+.chord-buttons button:hover { color: var(--gold-hi); border-color: var(--gold); }
+.chord-buttons button.active { background: linear-gradient(180deg, #f2d595, #c99840); color: #24160a; border-color: #f2d595; }
+
+.tab-wrap.paper-sheet {
+  position: relative;
+  height: min(70vh, 720px);
+  overflow-y: auto;
+  margin-top: 0;
+  border-radius: 3px;
+  padding: 18px 22px;
+  background:
+    var(--paper-noise),
+    radial-gradient(ellipse at center, rgba(255, 252, 240, 0.55), transparent 70%),
+    linear-gradient(180deg, #f6eed9, var(--paper) 40%, #ece0c2);
+  box-shadow:
+    0 0 0 1px rgba(120, 85, 35, 0.25),
+    0 1px 0 6px #efe4c8,
+    0 1px 0 7px rgba(120, 85, 35, 0.2),
+    0 24px 50px rgba(0, 0, 0, 0.55),
+    inset 0 0 60px rgba(150, 105, 45, 0.25);
+}
+.guitar-page #alphaTab { mix-blend-mode: multiply; }
+.guitar-page .at-cursor-bar { background: rgba(214, 160, 70, 0.16); }
+.guitar-page .at-cursor-beat { background: rgba(190, 130, 40, 0.9); width: 3px; }
+.guitar-page .at-selection div { background: rgba(214, 160, 70, 0.18); }
+.guitar-page .at-highlight * { fill: #a8701f; stroke: #a8701f; }
+
+.sheet-staff.tab-staff {
+  height: 30px;
+  background: repeating-linear-gradient(180deg, rgba(60, 40, 20, 0.42) 0 1px, transparent 1px 5px);
+}
+.sheet-staff.tab-staff::before { content: "T A B"; font-size: 10px; letter-spacing: 1px; inset: 2px auto 0 8px; writing-mode: vertical-lr; font-weight: 700; }
+.shelf-credit { margin: 0 24px 18px; font-size: 11.5px; color: #8f7c60; line-height: 1.7; }
+.shelf-credit a { color: var(--gold); }
+body.guitar-page.no-webgl .stage { height: auto; min-height: 150px; }
+@media (max-width: 720px) {
+  .chord-pad { padding-left: 14px; padding-right: 14px; }
 }

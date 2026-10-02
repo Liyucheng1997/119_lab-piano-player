@@ -197,8 +197,8 @@ export function createScorePaper({ renderer, width = 0.6 }) {
       drawOrnament(ctx, PAGE_W / 2, 450, 420);
       ctx.font = "28px 'Noto Serif SC', 'Songti SC', serif";
       ctx.fillStyle = "#6b5233";
-      ctx.fillText(cover ? "谱面无法排版" : "请从「乐谱柜」挑选一份乐谱", PAGE_W / 2, 560);
-      ctx.fillText(cover ? "钢琴仍会完整演奏" : "放上谱架后将自动演奏", PAGE_W / 2, 606);
+      const lines = cover ? cover.lines : ["请从「乐谱柜」挑选一份乐谱", "放上谱架后将自动演奏"];
+      lines.forEach((line, i) => ctx.fillText(line, PAGE_W / 2, 560 + i * 46, PAGE_W - 140));
       ctx.font = "200px serif";
       ctx.fillStyle = "rgba(90,60,30,0.18)";
       ctx.fillText("𝄞", PAGE_W / 2, 1050);
@@ -305,12 +305,12 @@ export function createScorePaper({ renderer, width = 0.6 }) {
   }
 
   // ---------- 对外接口 ----------
-  async function setScore({ svgEl, systems, offsetX = 0, offsetY = 0, title, subtitle }) {
+  async function setScore({ svgEl, systems, offsetX = 0, offsetY = 0, title, subtitle, coverLines }) {
     const token = ++loadToken;
     currentSystem = -1;
     marker.visible = band.visible = false;
     if (!svgEl || !systems || !systems.length) {
-      cover = title ? { title, subtitle } : null;
+      cover = title ? { title, subtitle, lines: coverLines || ["谱面无法排版", "钢琴仍会完整演奏"] } : null;
       score = null;
       img = null;
       spreadStarts = [0];
